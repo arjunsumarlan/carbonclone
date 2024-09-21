@@ -1,4 +1,4 @@
-# Web Voyager Test Suite
+# Carbon Clone - Web Voyager Test Suite
 
 This project is an automated testing suite for web applications using AI-powered navigation.
 
