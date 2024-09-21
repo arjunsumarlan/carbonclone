@@ -14,11 +14,11 @@ export class WebVoyager {
       const consentButton = await page.$('button:has-text("Accept Cookies")');
       if (consentButton) {
         await consentButton.click();
-        console.log('Clicked cookie consent button');
-        await page.waitForLoadState('networkidle');
+        console.log("Clicked cookie consent button");
+        await page.waitForLoadState("networkidle");
       }
     } catch (error) {
-      console.log('No cookie consent popup found or error handling it:', error);
+      console.log("No cookie consent popup found or error handling it:", error);
     }
   }
 
@@ -30,30 +30,41 @@ export class WebVoyager {
     while (attempts < maxAttempts) {
       try {
         console.log(`Attempt ${attempts + 1}:`);
-        await page.screenshot({ path: `debug_screenshot_attempt_${attempts + 1}.png` });
+        await page.screenshot({
+          path: `debug_screenshot_attempt_${attempts + 1}.png`,
+        });
         const pageContent = await this.getPageContent(page);
-        console.log('Page Content:', pageContent);
+        console.log("Page Content:", pageContent);
         const action = await this.planAction(pageContent, instructions);
-        console.log('Planned Action:', action);
+        console.log("Planned Action:", action);
         await this.executeAction(page, action);
-        console.log('Action executed successfully');
+        console.log("Action executed successfully");
 
         if (await this.isTaskComplete(page, instructions)) {
-          console.log('Task completed successfully');
-          return { success: true, details: 'Task completed successfully' };
+          console.log("Task completed successfully");
+          return { success: true, details: "Task completed successfully" };
         }
 
         attempts++;
       } catch (error) {
         console.error(`Navigation error (attempt ${attempts + 1}):`, error);
         if (attempts === maxAttempts - 1) {
-          return { success: false, failedSteps: [(error as Error).message], details: (error as Error).stack || '' };
+          return {
+            success: false,
+            failedSteps: [(error as Error).message],
+            details: (error as Error).stack || "",
+          };
         }
       }
     }
 
-    console.error('Max attempts reached without completing the task');
-    return { success: false, failedSteps: ['Max attempts reached'], details: 'Failed to complete the task within the maximum number of attempts' };
+    console.error("Max attempts reached without completing the task");
+    return {
+      success: false,
+      failedSteps: ["Max attempts reached"],
+      details:
+        "Failed to complete the task within the maximum number of attempts",
+    };
   }
 
   private async getPageContent(page: Page): Promise<PageContent> {

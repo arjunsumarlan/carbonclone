@@ -1,8 +1,8 @@
-import { Page } from 'playwright';
+import { Page } from "playwright";
 
 export interface TestResult {
   name: string;
-  status: 'Success' | 'Fail';
+  status: "Success" | "Fail";
   failedSteps: string[];
   details: string;
   aiDescription?: string;
